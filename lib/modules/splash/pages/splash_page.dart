@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_coffee/core/consts/size.dart';
-import 'package:my_coffee/core/shared/widgets/language_widget.dart';
-import 'package:my_coffee/locale/language.dart';
+import 'package:my_coffee/core/styles/colors.dart';
+import 'package:my_coffee/modules/splash/pages/widgets/button_animated_widget.dart';
+import 'package:my_coffee/modules/splash/pages/widgets/logo_animated_widget.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -10,24 +11,43 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final lang = Language().translation(context);
     return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("WIDTH: $width"),
-            Text("HEIGHT: $height"),
-            SizedBox(height: height * .2),
-            Text(lang.helloWorld),
-            SizedBox(height: height * .1),
-            const LanguageWidget(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/background_splash.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.brown.withOpacity(.79),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: height * 0.21),
+                  const LogoAnimatedWidget(),
+                  const Spacer(),
+                  const ButtonAnimatedWidget(),
+                  SizedBox(height: height * 0.08),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

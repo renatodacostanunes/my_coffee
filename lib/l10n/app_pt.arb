@@ -1,3 +1,9 @@
 {
-  "helloWorld": "Olá Mundo"  
+  "getStarted": "Iniciar",
+  "skip": "Pular",
+  "embraceCoffe": "Abrace a essência do café",
+  "unforgettableExperience": "Uma experiência inesquecível",
+  "unlockGrain": "Desvende os segredos dos grãos",
+  "lorem": "Lorem ipsum dolor sit amet consectetur. Vestibulum eget blandit mattis "
+  
 }

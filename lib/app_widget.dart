@@ -21,8 +21,6 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   void didChangeDependencies() {
-    // TODO: Pega a localização do país do usuário.
-    final Locale locale = View.of(context).platformDispatcher.locale;
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     Language().getLocale().then((locale) => {setLocale(locale)});
@@ -34,6 +32,9 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(
+        fontFamily: "Poppins",
+      ),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

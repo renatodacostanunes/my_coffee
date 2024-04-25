@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_coffee/core/consts/size.dart';
+import 'package:my_coffee/core/styles/colors.dart';
 import 'package:my_coffee/locale/language.dart';
 
 class AppWidget extends StatefulWidget {
@@ -34,6 +35,9 @@ class _AppWidgetState extends State<AppWidget> {
     return MaterialApp.router(
       theme: ThemeData(
         fontFamily: "Poppins",
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionHandleColor: AppColors.primary,
+        ),
       ),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

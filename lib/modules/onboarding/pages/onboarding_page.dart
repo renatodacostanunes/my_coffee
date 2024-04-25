@@ -32,76 +32,79 @@ class OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     final lang = Language().translation(context);
-    return Scaffold(
-      body: Observer(
-        builder: (context) {
-          return Stack(
-            children: [
-              PageView(
-                controller: controller.pageController,
-                children: [
-                  PageViewWidget(
-                    assetImage: "assets/images/onboarding_zero.png",
-                    title: lang.embraceCoffe,
-                    subTitle: lang.lorem,
-                    opacity: .50,
-                  ),
-                  PageViewWidget(
-                    assetImage: "assets/images/onboarding_one.png",
-                    title: lang.unforgettableExperience,
-                    subTitle: lang.lorem,
-                    opacity: .64,
-                  ),
-                  PageViewWidget(
-                    assetImage: "assets/images/onboarding_two.png",
-                    title: lang.unlockGrain,
-                    subTitle: lang.lorem,
-                    opacity: .50,
-                    showButtons: true,
-                  ),
-                ],
-              ),
-              SafeArea(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-                    child: SizedBox(
-                      height: height * .04,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ...List.generate(
-                            3,
-                            (index) => _buildIndicator(index),
-                          ),
-                          const Spacer(),
-                          Visibility(
-                            visible: controller.currentPage != 2,
-                            child: InkWell(
-                              onTap: () => controller.pageController.nextPage(
-                                duration: Durations.long1,
-                                curve: Curves.ease,
-                              ),
-                              child: Text(
-                                lang.skip,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14.0,
-                                  color: AppColors.white,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Observer(
+          builder: (context) {
+            return Stack(
+              children: [
+                PageView(
+                  controller: controller.pageController,
+                  children: [
+                    PageViewWidget(
+                      assetImage: "assets/images/onboarding_zero.png",
+                      title: lang.embraceCoffe,
+                      subTitle: lang.lorem,
+                      opacity: .50,
+                    ),
+                    PageViewWidget(
+                      assetImage: "assets/images/onboarding_one.png",
+                      title: lang.unforgettableExperience,
+                      subTitle: lang.lorem,
+                      opacity: .64,
+                    ),
+                    PageViewWidget(
+                      assetImage: "assets/images/onboarding_two.png",
+                      title: lang.unlockGrain,
+                      subTitle: lang.lorem,
+                      opacity: .50,
+                      showButtons: true,
+                    ),
+                  ],
+                ),
+                SafeArea(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+                      child: SizedBox(
+                        height: height * .04,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ...List.generate(
+                              3,
+                              (index) => _buildIndicator(index),
+                            ),
+                            const Spacer(),
+                            Visibility(
+                              visible: controller.currentPage != 2,
+                              child: InkWell(
+                                onTap: () => controller.pageController.nextPage(
+                                  duration: Durations.long1,
+                                  curve: Curves.ease,
+                                ),
+                                child: Text(
+                                  lang.skip,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: AppColors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

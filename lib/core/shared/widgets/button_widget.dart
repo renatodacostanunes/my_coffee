@@ -5,6 +5,7 @@ import 'package:my_coffee/core/styles/colors.dart';
 class ButtonWidget extends StatelessWidget {
   const ButtonWidget({
     required this.onPressed,
+    this.onLongPress,
     required this.titleButton,
     this.margin,
     this.titleColor = AppColors.background,
@@ -13,6 +14,7 @@ class ButtonWidget extends StatelessWidget {
   });
 
   final void Function()? onPressed;
+  final void Function()? onLongPress;
   final String titleButton;
   final Color titleColor;
   final Color backgroundColor;
@@ -23,6 +25,7 @@ class ButtonWidget extends StatelessWidget {
     return Container(
       margin: margin,
       height: height * .08,
+      width: double.maxFinite,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
@@ -33,6 +36,7 @@ class ButtonWidget extends StatelessWidget {
           foregroundColor: AppColors.transparent,
         ),
         onPressed: onPressed,
+        onLongPress: onLongPress,
         child: Text(
           titleButton,
           style: TextStyle(

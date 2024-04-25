@@ -20,6 +20,7 @@ class SignInPage extends StatefulWidget {
 
 class SignInPageState extends State<SignInPage> {
   // TODO: Salvar o e-mail do usuário e preencher o formfield.
+  // TODO: Habilitar botão após validar pelo menos e-mail e senha isNotEmpty
   final controller = Modular.get<SignInController>();
   RegisterAccountModel? arguments = Modular.args.data;
   late TextEditingController emailEC;

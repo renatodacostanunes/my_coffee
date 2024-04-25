@@ -38,7 +38,7 @@ abstract class SignInControllerBase with Store {
     } catch (e) {
       if (!context.mounted) return;
       removeLoading(context);
-      showMessage(snackBarLoginFailure, context);
+      showMessage(snackBarFailure, context);
     }
   }
 }

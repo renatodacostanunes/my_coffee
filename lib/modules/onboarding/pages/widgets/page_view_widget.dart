@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_coffee/core/consts/app_routes.dart';
 import 'package:my_coffee/core/consts/size.dart';
 import 'package:my_coffee/core/shared/widgets/button_widget.dart';
 import 'package:my_coffee/core/styles/colors.dart';
+import 'package:my_coffee/locale/language.dart';
 
 class PageViewWidget extends StatelessWidget {
   const PageViewWidget({
@@ -21,6 +24,7 @@ class PageViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Language().translation(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -76,14 +80,24 @@ class PageViewWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ButtonWidget(
-                      onPressed: () {},
-                      titleButton: "Register",
+                      onPressed: () {
+                        Modular.to.pushNamedAndRemoveUntil(
+                          AppRoutes.auth + AppRoutes.signUp,
+                          (_) => false,
+                        );
+                      },
+                      titleButton: lang.register,
                       margin: EdgeInsets.symmetric(horizontal: width * 0.1),
                     ),
                     SizedBox(height: height * 0.02),
                     ButtonWidget(
-                      onPressed: () {},
-                      titleButton: "Sign in",
+                      onPressed: () {
+                        Modular.to.pushNamedAndRemoveUntil(
+                          AppRoutes.auth + AppRoutes.signIn,
+                          (_) => false,
+                        );
+                      },
+                      titleButton: lang.signIn,
                       margin: EdgeInsets.symmetric(horizontal: width * 0.1),
                       titleColor: AppColors.primary,
                       backgroundColor: Colors.transparent,

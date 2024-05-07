@@ -40,9 +40,8 @@ class SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final lang = Language().translation(context);
-
     return PopScope(
-      canPop: false,
+      canPop: Modular.to.canPop(),
       child: Scaffold(
         body: SingleChildScrollView(
           child: Stack(
@@ -132,20 +131,25 @@ class SignUpPageState extends State<SignUpPage> {
                               SizedBox(height: height * .03),
                               Observer(
                                 builder: (_) {
-                                  var registerAccountModel = RegisterAccountModel(
-                                    fullName: fullNameEC.text,
-                                    emailAddress: emailEC.text,
-                                    password: passwordEC.text,
-                                  );
                                   return ButtonWidget(
                                     onPressed: controller.validFilds
                                         ? () async {
+                                            var registerAccountModel = RegisterAccountModel(
+                                              fullName: fullNameEC.text,
+                                              emailAddress: emailEC.text,
+                                              password: passwordEC.text,
+                                            );
                                             await controller.registerAccount(registerAccountModel, context);
                                           }
                                         : null,
                                     titleButton: lang.register,
                                     onLongPress: controller.validFilds
                                         ? () async {
+                                            var registerAccountModel = RegisterAccountModel(
+                                              fullName: fullNameEC.text,
+                                              emailAddress: emailEC.text,
+                                              password: passwordEC.text,
+                                            );
                                             await controller.registerAccount(registerAccountModel, context, true);
                                           }
                                         : null,

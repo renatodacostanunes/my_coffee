@@ -4,6 +4,8 @@ import 'package:mobx/mobx.dart';
 import 'package:my_coffee/core/consts/app_routes.dart';
 import 'package:my_coffee/core/shared/utils/loading.dart';
 import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage.dart';
+import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage_keys.dart';
+import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs.dart';
 import 'package:my_coffee/core/shared/utils/snackbar.dart';
 import 'package:my_coffee/core/shared/utils/validators.dart';
 import 'package:my_coffee/modules/auth/subModules/signUp/models/register_account_model.dart';
@@ -14,6 +16,7 @@ class SignUpController = SignUpControllerBase with _$SignUpController;
 
 abstract class SignUpControllerBase with Store {
   final _secureStorage = Modular.get<SecureStorage>();
+  final _sharedPrefs = SharedPrefs();
 
   @observable
   bool validFilds = false;
@@ -44,15 +47,25 @@ abstract class SignUpControllerBase with Store {
         ).toJson(),
       );
 
+      List<String>? listEnconded;
+      List<String> emailsRegistered = [];
+
+      listEnconded = await _sharedPrefs.load(SecurageStorageKeys.emailsRegistered);
+      if (listEnconded != null && listEnconded.isNotEmpty) {
+        emailsRegistered = listEnconded..add(registerAccountModel.emailAddress);
+      } else {
+        emailsRegistered.add(registerAccountModel.emailAddress);
+      }
+      await _sharedPrefs.save(SecurageStorageKeys.emailsRegistered, emailsRegistered);
+
       final data = await _secureStorage.load<String>(registerAccountModel.emailAddress);
       if (data != null && data.isNotEmpty) {
         if (!context.mounted) return;
         removeLoading(context);
         showMessage(snackBarRegisteredWithSuccess, context);
-        Modular.to.pushNamedAndRemoveUntil(
+        Modular.to.pushNamed(
           AppRoutes.auth + AppRoutes.signIn,
-          (_) => false,
-          arguments: RegisterAccountModel.fromJson(data),
+          arguments: emailsRegistered,
         );
       }
     } catch (e) {

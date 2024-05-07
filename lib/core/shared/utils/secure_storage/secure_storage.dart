@@ -28,6 +28,7 @@ class SecureStorage extends IStorage {
             throw Exception("Unsupported value type for $key");
         }
       } catch (e, stk) {
+        print(e);
         // logger(e, stk);
       }
     }

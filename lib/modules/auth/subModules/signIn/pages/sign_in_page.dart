@@ -19,11 +19,17 @@ class SignInPage extends StatefulWidget {
 }
 
 class SignInPageState extends State<SignInPage> {
-  final controller = Modular.get<SignInController>();
-
+  final _controller = Modular.get<SignInController>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _validators = Validators();
+
+  void validateFields() {
+    _controller.validateAllFilds(
+      emailAddress: _emailEC.text,
+      password: _passwordEC.text,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,14 +92,11 @@ class SignInPageState extends State<SignInPage> {
                             TextFieldWidget(
                               hintText: lang.emailAddress,
                               controller: _emailEC,
-                              onChanged: (_) => controller.validateAllFilds(
-                                emailAddress: _emailEC.text,
-                                password: _passwordEC.text,
-                              ),
+                              onChanged: (_) => validateFields(),
                               validator: (_) => _validators.emailValidator(_emailEC.text),
                               keyboardType: TextInputType.emailAddress,
                               suffixIcon: FutureBuilder(
-                                  future: controller.setEmail(_emailEC),
+                                  future: _controller.setEmail(_emailEC),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState == ConnectionState.waiting) {
                                       return Container(
@@ -109,10 +112,10 @@ class SignInPageState extends State<SignInPage> {
                                       icon: const Icon(Icons.arrow_drop_down),
                                       onSelected: (String email) async {
                                         _emailEC.text = email;
-                                        await controller.saveLastSelectedEmail(email);
+                                        await _controller.saveLastSelectedEmail(email);
                                       },
                                       itemBuilder: (BuildContext context) {
-                                        return controller.emailsRegistered!.map(
+                                        return _controller.emailsRegistered!.map(
                                           (String option) {
                                             return PopupMenuItem<String>(
                                               value: option,
@@ -125,14 +128,22 @@ class SignInPageState extends State<SignInPage> {
                                   }),
                             ),
                             SizedBox(height: height * .02),
-                            TextFieldWidget(
-                              onChanged: (_) => controller.validateAllFilds(
-                                emailAddress: _emailEC.text,
-                                password: _passwordEC.text,
-                              ),
-                              hintText: lang.password,
-                              controller: _passwordEC,
-                              obscureText: true,
+                            Observer(
+                              builder: (context) {
+                                return TextFieldWidget(
+                                  onChanged: (_) => validateFields(),
+                                  hintText: lang.password,
+                                  controller: _passwordEC,
+                                  obscureText: _controller.passwordVisible,
+                                  suffixIcon: IconButton(
+                                    onPressed: () => _controller.passwordVisible = !_controller.passwordVisible,
+                                    icon: Icon(
+                                      _controller.passwordVisible ? Icons.visibility : Icons.visibility_off,
+                                      size: height * 0.04,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(height: height * .01),
                             Row(
@@ -152,12 +163,12 @@ class SignInPageState extends State<SignInPage> {
                             Observer(
                               builder: (context) {
                                 return ButtonWidget(
-                                  onPressed: controller.validFilds
-                                      ? () async => await controller.login(_emailEC.text, _passwordEC.text, context)
+                                  onPressed: _controller.validFilds
+                                      ? () async => await _controller.login(_emailEC.text, _passwordEC.text, context)
                                       : null,
-                                  onLongPress: controller.validFilds
+                                  onLongPress: _controller.validFilds
                                       ? () async =>
-                                          await controller.login(_emailEC.text, _passwordEC.text, context, true)
+                                          await _controller.login(_emailEC.text, _passwordEC.text, context, true)
                                       : null,
                                   titleButton: lang.signIn,
                                 );

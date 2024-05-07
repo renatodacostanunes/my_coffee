@@ -25,6 +25,22 @@ mixin _$SignInController on SignInControllerBase, Store {
     });
   }
 
+  late final _$passwordVisibleAtom =
+      Atom(name: 'SignInControllerBase.passwordVisible', context: context);
+
+  @override
+  bool get passwordVisible {
+    _$passwordVisibleAtom.reportRead();
+    return super.passwordVisible;
+  }
+
+  @override
+  set passwordVisible(bool value) {
+    _$passwordVisibleAtom.reportWrite(value, super.passwordVisible, () {
+      super.passwordVisible = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('SignInControllerBase.login', context: context);
 
@@ -54,7 +70,8 @@ mixin _$SignInController on SignInControllerBase, Store {
   @override
   String toString() {
     return '''
-validFilds: ${validFilds}
+validFilds: ${validFilds},
+passwordVisible: ${passwordVisible}
     ''';
   }
 }

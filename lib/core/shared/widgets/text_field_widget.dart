@@ -10,6 +10,8 @@ class TextFieldWidget extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.onChanged,
+    this.suffixIcon,
+    this.obscureText = false,
   });
 
   final String? hintText;
@@ -17,6 +19,8 @@ class TextFieldWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
+  final Widget? suffixIcon;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +36,14 @@ class TextFieldWidget extends StatelessWidget {
       controller: controller,
       validator: validator,
       cursorColor: AppColors.primary,
+      obscureText: obscureText,
       style: textStyle,
       decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        suffixIconConstraints: const BoxConstraints(
+          maxHeight: double.maxFinite,
+          maxWidth: double.maxFinite,
+        ),
         filled: true,
         fillColor: AppColors.greyDark,
         border: borderStyle,

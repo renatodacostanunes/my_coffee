@@ -22,6 +22,9 @@ abstract class SignInControllerBase with Store {
   @observable
   bool validFilds = false;
 
+  @observable
+  bool passwordVisible = false;
+
   @action
   void validateAllFilds({
     required String emailAddress,

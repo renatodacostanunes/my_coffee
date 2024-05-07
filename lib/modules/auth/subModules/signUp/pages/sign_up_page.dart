@@ -20,20 +20,20 @@ class SignUpPage extends StatefulWidget {
 }
 
 class SignUpPageState extends State<SignUpPage> {
-  final controller = Modular.get<SignUpController>();
-  final validators = Validators();
-  final emailEC = TextEditingController();
-  final fullNameEC = TextEditingController();
-  final passwordEC = TextEditingController();
-  final confirmPasswordEC = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final _controller = Modular.get<SignUpController>();
+  final _validators = Validators();
+  final _emailEC = TextEditingController();
+  final _fullNameEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+  final _confirmPasswordEC = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   void validateFields() {
-    controller.validateAllFilds(
-      fullName: fullNameEC.text,
-      emailAddress: emailEC.text,
-      password: passwordEC.text,
-      confirmPassword: confirmPasswordEC.text,
+    _controller.validateAllFilds(
+      fullName: _fullNameEC.text,
+      emailAddress: _emailEC.text,
+      password: _passwordEC.text,
+      confirmPassword: _confirmPasswordEC.text,
     );
   }
 
@@ -93,71 +93,92 @@ class SignUpPageState extends State<SignUpPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: width * .05),
                         child: Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
-                              TextFieldWidget(
-                                hintText: lang.fullName,
-                                controller: fullNameEC,
-                                onChanged: (_) => validateFields(),
-                                validator: (_) => validators.fullNameValidator(fullNameEC.text),
-                                keyboardType: TextInputType.name,
-                              ),
-                              SizedBox(height: height * .02),
-                              TextFieldWidget(
-                                hintText: lang.emailAddress,
-                                controller: emailEC,
-                                onChanged: (_) => validateFields(),
-                                validator: (_) => validators.emailValidator(emailEC.text),
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                              SizedBox(height: height * .02),
-                              TextFieldWidget(
-                                hintText: lang.password,
-                                controller: passwordEC,
-                                onChanged: (_) => validateFields(),
-                                validator: (_) => validators.passwordValidator(passwordEC.text),
-                              ),
-                              SizedBox(height: height * .02),
-                              TextFieldWidget(
-                                hintText: lang.password,
-                                controller: confirmPasswordEC,
-                                onChanged: (_) => validateFields(),
-                                validator: (_) => validators.confirmPasswordValidator(
-                                  password: passwordEC.text,
-                                  confirmPassword: confirmPasswordEC.text,
-                                ),
-                              ),
-                              SizedBox(height: height * .03),
-                              Observer(
-                                builder: (_) {
-                                  return ButtonWidget(
-                                    onPressed: controller.validFilds
-                                        ? () async {
-                                            var registerAccountModel = RegisterAccountModel(
-                                              fullName: fullNameEC.text,
-                                              emailAddress: emailEC.text,
-                                              password: passwordEC.text,
-                                            );
-                                            await controller.registerAccount(registerAccountModel, context);
-                                          }
-                                        : null,
-                                    titleButton: lang.register,
-                                    onLongPress: controller.validFilds
-                                        ? () async {
-                                            var registerAccountModel = RegisterAccountModel(
-                                              fullName: fullNameEC.text,
-                                              emailAddress: emailEC.text,
-                                              password: passwordEC.text,
-                                            );
-                                            await controller.registerAccount(registerAccountModel, context, true);
-                                          }
-                                        : null,
-                                  );
-                                },
-                              ),
-                              SizedBox(height: height * .06),
-                            ],
+                          key: _formKey,
+                          child: Observer(
+                            builder: (context) {
+                              return Column(
+                                children: [
+                                  TextFieldWidget(
+                                    hintText: lang.fullName,
+                                    controller: _fullNameEC,
+                                    onChanged: (_) => validateFields(),
+                                    validator: (_) => _validators.fullNameValidator(_fullNameEC.text),
+                                    keyboardType: TextInputType.name,
+                                  ),
+                                  SizedBox(height: height * .02),
+                                  TextFieldWidget(
+                                    hintText: lang.emailAddress,
+                                    controller: _emailEC,
+                                    onChanged: (_) => validateFields(),
+                                    validator: (_) => _validators.emailValidator(_emailEC.text),
+                                    keyboardType: TextInputType.emailAddress,
+                                  ),
+                                  SizedBox(height: height * .02),
+                                  TextFieldWidget(
+                                    obscureText: _controller.passwordVisible,
+                                    suffixIcon: IconButton(
+                                      onPressed: () => _controller.passwordVisible = !_controller.passwordVisible,
+                                      icon: Icon(
+                                        _controller.passwordVisible ? Icons.visibility : Icons.visibility_off,
+                                        size: height * 0.04,
+                                      ),
+                                    ),
+                                    hintText: lang.password,
+                                    controller: _passwordEC,
+                                    onChanged: (_) => validateFields(),
+                                    validator: (_) => _validators.passwordValidator(_passwordEC.text),
+                                  ),
+                                  SizedBox(height: height * .02),
+                                  TextFieldWidget(
+                                    obscureText: _controller.confirmPasswordVisible,
+                                    suffixIcon: IconButton(
+                                      onPressed: () =>
+                                          _controller.confirmPasswordVisible = !_controller.confirmPasswordVisible,
+                                      icon: Icon(
+                                        _controller.confirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                        size: height * 0.04,
+                                      ),
+                                    ),
+                                    hintText: lang.confirmPassword,
+                                    controller: _confirmPasswordEC,
+                                    onChanged: (_) => validateFields(),
+                                    validator: (_) => _validators.confirmPasswordValidator(
+                                      password: _passwordEC.text,
+                                      confirmPassword: _confirmPasswordEC.text,
+                                    ),
+                                  ),
+                                  SizedBox(height: height * .03),
+                                  Observer(
+                                    builder: (_) {
+                                      return ButtonWidget(
+                                        onPressed: _controller.validFilds
+                                            ? () async {
+                                                var registerAccountModel = RegisterAccountModel(
+                                                  fullName: _fullNameEC.text,
+                                                  emailAddress: _emailEC.text,
+                                                  password: _passwordEC.text,
+                                                );
+                                                await _controller.registerAccount(registerAccountModel, context);
+                                              }
+                                            : null,
+                                        titleButton: lang.register,
+                                        onLongPress: _controller.validFilds
+                                            ? () async {
+                                                var registerAccountModel = RegisterAccountModel(
+                                                  fullName: _fullNameEC.text,
+                                                  emailAddress: _emailEC.text,
+                                                  password: _passwordEC.text,
+                                                );
+                                                await _controller.registerAccount(registerAccountModel, context, true);
+                                              }
+                                            : null,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: height * .06),
+                                ],
+                              );
+                            },
                           ),
                         ),
                       ),

@@ -21,6 +21,12 @@ abstract class SignUpControllerBase with Store {
   @observable
   bool validFilds = false;
 
+  @observable
+  bool passwordVisible = false;
+
+  @observable
+  bool confirmPasswordVisible = false;
+
   Future<void> registerAccount(
     RegisterAccountModel registerAccountModel,
     BuildContext context, [

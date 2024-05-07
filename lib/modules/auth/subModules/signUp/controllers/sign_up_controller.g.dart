@@ -25,6 +25,39 @@ mixin _$SignUpController on SignUpControllerBase, Store {
     });
   }
 
+  late final _$passwordVisibleAtom =
+      Atom(name: 'SignUpControllerBase.passwordVisible', context: context);
+
+  @override
+  bool get passwordVisible {
+    _$passwordVisibleAtom.reportRead();
+    return super.passwordVisible;
+  }
+
+  @override
+  set passwordVisible(bool value) {
+    _$passwordVisibleAtom.reportWrite(value, super.passwordVisible, () {
+      super.passwordVisible = value;
+    });
+  }
+
+  late final _$confirmPasswordVisibleAtom = Atom(
+      name: 'SignUpControllerBase.confirmPasswordVisible', context: context);
+
+  @override
+  bool get confirmPasswordVisible {
+    _$confirmPasswordVisibleAtom.reportRead();
+    return super.confirmPasswordVisible;
+  }
+
+  @override
+  set confirmPasswordVisible(bool value) {
+    _$confirmPasswordVisibleAtom
+        .reportWrite(value, super.confirmPasswordVisible, () {
+      super.confirmPasswordVisible = value;
+    });
+  }
+
   late final _$SignUpControllerBaseActionController =
       ActionController(name: 'SignUpControllerBase', context: context);
 
@@ -50,7 +83,9 @@ mixin _$SignUpController on SignUpControllerBase, Store {
   @override
   String toString() {
     return '''
-validFilds: ${validFilds}
+validFilds: ${validFilds},
+passwordVisible: ${passwordVisible},
+confirmPasswordVisible: ${confirmPasswordVisible}
     ''';
   }
 }

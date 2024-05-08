@@ -96,36 +96,80 @@ class SignInPageState extends State<SignInPage> {
                               validator: (_) => _validators.emailValidator(_emailEC.text),
                               keyboardType: TextInputType.emailAddress,
                               suffixIcon: FutureBuilder(
-                                  future: _controller.setEmail(_emailEC),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Container(
-                                        margin: EdgeInsets.only(right: width * 0.03),
-                                        height: height * 0.05,
-                                        width: height * 0.05,
-                                        child: const CircularProgressIndicator(
-                                          color: AppColors.primary,
-                                        ),
-                                      );
-                                    }
-                                    return PopupMenuButton<String>(
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      onSelected: (String email) async {
-                                        _emailEC.text = email;
-                                        await _controller.saveLastSelectedEmail(email);
-                                      },
-                                      itemBuilder: (BuildContext context) {
-                                        return _controller.emailsRegistered!.map(
-                                          (String option) {
-                                            return PopupMenuItem<String>(
-                                              value: option,
-                                              child: Text(option),
+                                future: _controller.setEmail(_emailEC),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Container(
+                                      margin: EdgeInsets.only(right: width * 0.03),
+                                      height: height * 0.05,
+                                      width: height * 0.05,
+                                      child: const CircularProgressIndicator(
+                                        color: AppColors.primary,
+                                      ),
+                                    );
+                                  }
+                                  return IconButton(
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => StatefulBuilder(
+                                          builder: (_, setState) {
+                                            return Dialog(
+                                              alignment: const Alignment(1, -0.5),
+                                              insetPadding:
+                                                  EdgeInsets.symmetric(horizontal: width * .05, vertical: height * .1),
+                                              shape: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(8.0),
+                                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: _controller.emailsRegistered!
+                                                      .map(
+                                                        (email) => PopupMenuItem(
+                                                          onTap: () async {
+                                                            _emailEC.text = email;
+                                                            await _controller.saveLastSelectedEmail(email);
+                                                          },
+                                                          child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Flexible(
+                                                                child: Text(
+                                                                  email,
+                                                                  maxLines: 1,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                onPressed: () async {
+                                                                  await _controller.removeRegisteredAccount(
+                                                                    email,
+                                                                    _emailEC,
+                                                                  );
+                                                                  setState(() {});
+                                                                },
+                                                                icon: const Icon(
+                                                                  Icons.delete_forever,
+                                                                  color: AppColors.red,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ),
+                                              ),
                                             );
                                           },
-                                        ).toList();
-                                      },
-                                    );
-                                  }),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                             SizedBox(height: height * .02),
                             Observer(

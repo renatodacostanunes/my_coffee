@@ -23,7 +23,7 @@ abstract class SignInControllerBase with Store {
   bool validFilds = false;
 
   @observable
-  bool passwordVisible = false;
+  bool passwordVisible = true;
 
   @action
   void validateAllFilds({
@@ -90,5 +90,17 @@ abstract class SignInControllerBase with Store {
 
   Future<void> saveLastSelectedEmail(String lastSelectedEmail) async {
     await _sharedPrefs.save(SharedPrefsKeys.lastSelectedEmail, lastSelectedEmail);
+  }
+
+  Future<void> removeRegisteredAccount(String email, TextEditingController emailEC) async {
+    emailsRegistered = await _sharedPrefs.load<List<String>?>(SecurageStorageKeys.emailsRegistered) ?? [];
+    emailsRegistered?.removeAt(emailsRegistered!.indexOf(email));
+    var lastEmail = await _sharedPrefs.load<String?>(SharedPrefsKeys.lastSelectedEmail) ?? "";
+    if (lastEmail == email) {
+      emailEC.text = "";
+      await _sharedPrefs.delete(SharedPrefsKeys.lastSelectedEmail);
+    }
+    await _secureStorage.delete(email);
+    await _sharedPrefs.save(SecurageStorageKeys.emailsRegistered, emailsRegistered);
   }
 }

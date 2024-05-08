@@ -12,6 +12,7 @@ class TextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.suffixIcon,
     this.obscureText = false,
+    this.autofocus = false,
   });
 
   final String? hintText;
@@ -21,6 +22,7 @@ class TextFieldWidget extends StatelessWidget {
   final void Function(String)? onChanged;
   final Widget? suffixIcon;
   final bool obscureText;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class TextFieldWidget extends StatelessWidget {
     );
     final textStyle = TextStyle(color: AppColors.greyLight, fontSize: width * .035);
     return TextFormField(
+      autofocus: autofocus,
       onChanged: onChanged,
       keyboardType: keyboardType,
       autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -22,10 +22,10 @@ abstract class SignUpControllerBase with Store {
   bool validFilds = false;
 
   @observable
-  bool passwordVisible = false;
+  bool passwordVisible = true;
 
   @observable
-  bool confirmPasswordVisible = false;
+  bool confirmPasswordVisible = true;
 
   Future<void> registerAccount(
     RegisterAccountModel registerAccountModel,

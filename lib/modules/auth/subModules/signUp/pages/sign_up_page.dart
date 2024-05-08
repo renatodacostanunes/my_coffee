@@ -99,6 +99,7 @@ class SignUpPageState extends State<SignUpPage> {
                               return Column(
                                 children: [
                                   TextFieldWidget(
+                                    autofocus: true,
                                     hintText: lang.fullName,
                                     controller: _fullNameEC,
                                     onChanged: (_) => validateFields(),

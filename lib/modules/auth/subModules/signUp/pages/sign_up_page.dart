@@ -99,6 +99,7 @@ class SignUpPageState extends State<SignUpPage> {
                               return Column(
                                 children: [
                                   TextFieldWidget(
+                                    height: height * .03,
                                     autofocus: true,
                                     hintText: lang.fullName,
                                     controller: _fullNameEC,
@@ -108,6 +109,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   ),
                                   SizedBox(height: height * .02),
                                   TextFieldWidget(
+                                    height: height * .03,
                                     hintText: lang.emailAddress,
                                     controller: _emailEC,
                                     onChanged: (_) => validateFields(),
@@ -116,6 +118,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   ),
                                   SizedBox(height: height * .02),
                                   TextFieldWidget(
+                                    height: height * .03,
                                     obscureText: _controller.passwordVisible,
                                     suffixIcon: IconButton(
                                       onPressed: () => _controller.passwordVisible = !_controller.passwordVisible,
@@ -131,6 +134,7 @@ class SignUpPageState extends State<SignUpPage> {
                                   ),
                                   SizedBox(height: height * .02),
                                   TextFieldWidget(
+                                    height: height * .03,
                                     obscureText: _controller.confirmPasswordVisible,
                                     suffixIcon: IconButton(
                                       onPressed: () =>

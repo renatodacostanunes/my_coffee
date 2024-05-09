@@ -13,6 +13,7 @@ class TextFieldWidget extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     this.autofocus = false,
+    required this.height,
   });
 
   final String? hintText;
@@ -23,6 +24,7 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final bool autofocus;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class TextFieldWidget extends StatelessWidget {
       cursorColor: AppColors.primary,
       obscureText: obscureText,
       style: textStyle,
+      textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         suffixIconConstraints: const BoxConstraints(
@@ -56,7 +59,7 @@ class TextFieldWidget extends StatelessWidget {
         hintStyle: textStyle,
         hintText: hintText,
         errorStyle: TextStyle(fontSize: width * .035),
-        contentPadding: const EdgeInsets.only(bottom: 0.0),
+        contentPadding: EdgeInsets.symmetric(vertical: height),
         prefix: Padding(padding: EdgeInsets.only(left: width * 0.05)),
       ),
     );

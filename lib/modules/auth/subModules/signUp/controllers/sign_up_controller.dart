@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
@@ -7,6 +8,7 @@ import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage.dart';
 import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage_keys.dart';
 import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs.dart';
 import 'package:my_coffee/core/shared/utils/snackbar.dart';
+import 'package:my_coffee/core/shared/utils/tools.dart';
 import 'package:my_coffee/core/shared/utils/validators.dart';
 import 'package:my_coffee/modules/auth/subModules/signUp/models/register_account_model.dart';
 
@@ -16,7 +18,8 @@ class SignUpController = SignUpControllerBase with _$SignUpController;
 
 abstract class SignUpControllerBase with Store {
   final _secureStorage = Modular.get<SecureStorage>();
-  final _sharedPrefs = SharedPrefs();
+  final _sharedPrefs = Modular.get<SharedPrefs>();
+  final _firebaseAuth = Modular.get<FirebaseAuth>();
 
   @observable
   bool validFilds = false;
@@ -64,16 +67,22 @@ abstract class SignUpControllerBase with Store {
       }
       await _sharedPrefs.save(SecurageStorageKeys.emailsRegistered, emailsRegistered);
 
-      final data = await _secureStorage.load<String>(registerAccountModel.emailAddress);
-      if (data != null && data.isNotEmpty) {
-        if (!context.mounted) return;
-        removeLoading(context);
-        showMessage(snackBarRegisteredWithSuccess, context);
-        Modular.to.pushNamed(
-          AppRoutes.auth + AppRoutes.signIn,
-          arguments: emailsRegistered,
+      try {
+        await _firebaseAuth.createUserWithEmailAndPassword(
+          email: registerAccountModel.emailAddress,
+          password: registerAccountModel.password,
         );
+      } catch (e) {
+        logger(e);
       }
+
+      if (!context.mounted) return;
+      removeLoading(context);
+      showMessage(snackBarRegisteredWithSuccess, context);
+      Modular.to.pushNamed(
+        AppRoutes.auth + AppRoutes.signIn,
+        arguments: emailsRegistered,
+      );
     } catch (e) {
       if (!context.mounted) return;
       removeLoading(context);

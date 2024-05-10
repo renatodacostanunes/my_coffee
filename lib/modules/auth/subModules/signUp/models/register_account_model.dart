@@ -4,11 +4,13 @@ class RegisterAccountModel {
   final String fullName;
   final String emailAddress;
   final String password;
+  final String? photoURL;
 
   RegisterAccountModel({
     required this.fullName,
     required this.emailAddress,
     required this.password,
+    this.photoURL,
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class RegisterAccountModel {
       'fullName': fullName,
       'emailAddress': emailAddress,
       'password': password,
+      'photoURL': photoURL,
     };
   }
 
@@ -24,6 +27,7 @@ class RegisterAccountModel {
       fullName: map['fullName'] as String,
       emailAddress: map['emailAddress'] as String,
       password: map['password'] as String,
+      photoURL: map['photoURL'] != null ? map['photoURL'] as String : null,
     );
   }
 

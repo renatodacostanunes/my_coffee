@@ -3,10 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../istorage.dart';
 import '../tools.dart';
 
-/// Shared preferences storage
 class SharedPrefs extends IStorage {
-  /// Supported types: String, String?, int, int?, double, double?, bool, bool?
-  /// If valur is [null] the key will be deleted
   @override
   Future<void> save(String key, Object? value) async {
     if (key.isEmpty) return;
@@ -45,7 +42,6 @@ class SharedPrefs extends IStorage {
     }
   }
 
-  /// Supported types: String, String?, int, int?, double, double?, bool, bool?
   @override
   Future<T?> load<T>(String key) async {
     if (key.isEmpty) return null;

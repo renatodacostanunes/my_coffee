@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:my_coffee/core/shared/utils/tools.dart';
 
 import '../istorage.dart';
 
@@ -28,8 +29,7 @@ class SecureStorage extends IStorage {
             throw Exception("Unsupported value type for $key");
         }
       } catch (e, stk) {
-        print(e);
-        // logger(e, stk);
+        logger(e, stk);
       }
     }
   }
@@ -53,7 +53,7 @@ class SecureStorage extends IStorage {
           throw Exception("Unsupported value type for $key");
       }
     } catch (e, stk) {
-      // logger(e, stk);
+      logger(e, stk);
       return null;
     }
   }
@@ -64,7 +64,7 @@ class SecureStorage extends IStorage {
     try {
       await _secureStorage.delete(key: key);
     } catch (e, stk) {
-      // logger(e, stk);
+      logger(e, stk);
     }
   }
 
@@ -73,7 +73,7 @@ class SecureStorage extends IStorage {
     try {
       await _secureStorage.deleteAll();
     } catch (e, stk) {
-      // logger(e, stk);
+      logger(e, stk);
     }
   }
 

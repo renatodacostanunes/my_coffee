@@ -18,5 +18,21 @@
   "forgotPassword": "Esqueceu sua senha?",
   "signIn": "Entrar",
   "loginWith": "Ou faça login com",
-  "haveAccount": "Não tem uma conta?"
+  "haveAccount": "Não tem uma conta?",
+  "warning": "Aviso",
+  "emailAlreadyRegistered": "Este e-mail já está registado",
+  "success": "Sucesso",
+  "userRegisteredSuccessfully": "Usuário cadastrado com sucesso",
+  "sessionExpires": "Sua sessão expira em 7 dias",
+  "ops": "Ops",
+  "incorrectPassword": "Senha incorreta",
+  "error": "Erro",
+  "somethingWrong": "Algo deu errado, tente novamente mais tarde",
+  "invalidEmail": "E-mail inválido",
+  "invalidName": "Nome inválido",
+  "passwordMustContain": "A senha precisa conter pelo menos:",
+  "specialCharacter": "1 Carácter especial",
+  "capitalLetter": "1 Letra maíuscula",
+  "charactersMinimum": "6 Caracteres no mínimo",
+  "passwordSame": "As senhas devem ser iguais"
 }

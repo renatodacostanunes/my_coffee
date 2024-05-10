@@ -42,7 +42,7 @@ abstract class SignUpControllerBase with Store {
       if (emailExists) {
         if (!context.mounted) return;
         removeLoading(context);
-        showMessage(snackBarEmailAlreadyRegistered, context);
+        showMessage(snackBarEmailAlreadyRegistered(context), context);
         return;
       }
       await _secureStorage.save(
@@ -78,7 +78,7 @@ abstract class SignUpControllerBase with Store {
 
       if (!context.mounted) return;
       removeLoading(context);
-      showMessage(snackBarRegisteredWithSuccess, context);
+      showMessage(snackBarRegisteredWithSuccess(context), context);
       Modular.to.pushNamed(
         AppRoutes.auth + AppRoutes.signIn,
         arguments: emailsRegistered,
@@ -86,7 +86,7 @@ abstract class SignUpControllerBase with Store {
     } catch (e) {
       if (!context.mounted) return;
       removeLoading(context);
-      showMessage(snackBarFailure, context);
+      showMessage(snackBarFailure(context), context);
     }
   }
 
@@ -96,15 +96,17 @@ abstract class SignUpControllerBase with Store {
     required String emailAddress,
     required String password,
     required String confirmPassword,
+    required BuildContext context,
   }) {
     var validators = Validators();
     if (fullName.isNotEmpty && emailAddress.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty) {
-      var fullNameValid = validators.fullNameValidator(fullName);
-      var emailAddressValid = validators.emailValidator(emailAddress);
-      var passwordValid = validators.passwordValidator(password);
+      var fullNameValid = validators.fullNameValidator(fullName, context);
+      var emailAddressValid = validators.emailValidator(emailAddress, context);
+      var passwordValid = validators.passwordValidator(password, context);
       var confirmPasswordValid = validators.confirmPasswordValidator(
         password: password,
         confirmPassword: confirmPassword,
+        context: context,
       );
       if (fullNameValid == null && emailAddressValid == null && passwordValid == null && confirmPasswordValid == null) {
         validFilds = true;

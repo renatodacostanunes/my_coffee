@@ -66,7 +66,8 @@ mixin _$SignUpController on SignUpControllerBase, Store {
       {required String fullName,
       required String emailAddress,
       required String password,
-      required String confirmPassword}) {
+      required String confirmPassword,
+      required BuildContext context}) {
     final _$actionInfo = _$SignUpControllerBaseActionController.startAction(
         name: 'SignUpControllerBase.validateAllFilds');
     try {
@@ -74,7 +75,8 @@ mixin _$SignUpController on SignUpControllerBase, Store {
           fullName: fullName,
           emailAddress: emailAddress,
           password: password,
-          confirmPassword: confirmPassword);
+          confirmPassword: confirmPassword,
+          context: context);
     } finally {
       _$SignUpControllerBaseActionController.endAction(_$actionInfo);
     }

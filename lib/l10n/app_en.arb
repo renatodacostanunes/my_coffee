@@ -18,5 +18,21 @@
   "forgotPassword": "Forgot Password?",
   "signIn": "Sign in",
   "loginWith": "Or Login with",
-  "haveAccount": "Don't have an account ?"
+  "haveAccount": "Don't have an account ?",
+  "warning": "Warning",
+  "emailAlreadyRegistered": "This email is already registered",
+  "success": "Success",
+  "userRegisteredSuccessfully": "User registered successfully",
+  "sessionExpires": "Your session expires in 7 days",
+  "ops": "Ops",
+  "incorrectPassword": "Incorrect password",
+  "error": "Error",
+  "somethingWrong": "Something went wrong, try again later",
+  "invalidEmail": "Invalid email",
+  "invalidName": "Invalid name",
+  "passwordMustContain": "The password must contain at least:",
+  "specialCharacter": "1 Special character",
+  "capitalLetter": "1 Capital letter",
+  "charactersMinimum": "6 Characters minimum",
+  "passwordSame": "Passwords must be the same"
 }

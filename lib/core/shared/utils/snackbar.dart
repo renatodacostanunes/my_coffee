@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:my_coffee/locale/language.dart';
 
 void showMessage(SnackBar snackBar, BuildContext context) {
   ScaffoldMessenger.of(context)
@@ -7,57 +8,57 @@ void showMessage(SnackBar snackBar, BuildContext context) {
     ..showSnackBar(snackBar);
 }
 
-final snackBarEmailAlreadyRegistered = SnackBar(
-  elevation: 0,
-  behavior: SnackBarBehavior.floating,
-  backgroundColor: Colors.transparent,
-  content: AwesomeSnackbarContent(
-    title: 'Warning',
-    message: 'This email is already registered',
-    contentType: ContentType.warning,
-  ),
-);
+SnackBar snackBarEmailAlreadyRegistered(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).warning,
+        message: Language().translation(context).emailAlreadyRegistered,
+        contentType: ContentType.warning,
+      ),
+    );
 
-final snackBarRegisteredWithSuccess = SnackBar(
-  elevation: 0,
-  behavior: SnackBarBehavior.floating,
-  backgroundColor: Colors.transparent,
-  content: AwesomeSnackbarContent(
-    title: 'Success',
-    message: 'User registered successfully',
-    contentType: ContentType.success,
-  ),
-);
+SnackBar snackBarRegisteredWithSuccess(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).success,
+        message: Language().translation(context).userRegisteredSuccessfully,
+        contentType: ContentType.success,
+      ),
+    );
 
-final snackBarLoginSuccess = SnackBar(
-  elevation: 0,
-  behavior: SnackBarBehavior.floating,
-  backgroundColor: Colors.transparent,
-  content: AwesomeSnackbarContent(
-    title: 'Success',
-    message: 'Your session expires in 7 days',
-    contentType: ContentType.help,
-  ),
-);
+SnackBar snackBarLoginSuccess(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).success,
+        message: Language().translation(context).sessionExpires,
+        contentType: ContentType.help,
+      ),
+    );
 
-final snackBarLoginPasswordIncorrect = SnackBar(
-  elevation: 0,
-  behavior: SnackBarBehavior.floating,
-  backgroundColor: Colors.transparent,
-  content: AwesomeSnackbarContent(
-    title: 'Ops',
-    message: 'Incorrect password',
-    contentType: ContentType.warning,
-  ),
-);
+SnackBar snackBarLoginPasswordIncorrect(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).ops,
+        message: Language().translation(context).incorrectPassword,
+        contentType: ContentType.warning,
+      ),
+    );
 
-final snackBarFailure = SnackBar(
-  elevation: 0,
-  behavior: SnackBarBehavior.floating,
-  backgroundColor: Colors.transparent,
-  content: AwesomeSnackbarContent(
-    title: 'Error',
-    message: 'Something went wrong, try again later',
-    contentType: ContentType.failure,
-  ),
-);
+SnackBar snackBarFailure(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).error,
+        message: Language().translation(context).somethingWrong,
+        contentType: ContentType.failure,
+      ),
+    );

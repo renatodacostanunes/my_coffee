@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_coffee/app_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs.dart';
 
 import 'language_entity.dart';
 
@@ -10,6 +11,7 @@ late final AppLocalizations lang;
 /// Control the language
 class Language {
   static const String language = 'languageCode';
+  final _sharedPrefs = Modular.get<SharedPrefs>();
 
   /// Contains all available languages
   static const List<LanguageEntity> languageList = <LanguageEntity>[
@@ -26,8 +28,7 @@ class Language {
     String languageCode,
   ) {
     () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(language, languageCode);
+      await _sharedPrefs.save(language, languageCode);
     }();
     AppWidget.setLocale(context, _locale(languageCode));
     return _locale(languageCode);
@@ -35,8 +36,7 @@ class Language {
 
   /// Get the saved language
   Future<Locale> getLocale() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String languageCode = prefs.getString(language) ?? en;
+    String languageCode = await _sharedPrefs.load<String>(language) ?? en;
     return _locale(languageCode);
   }
 

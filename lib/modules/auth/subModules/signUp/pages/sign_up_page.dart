@@ -34,6 +34,7 @@ class SignUpPageState extends State<SignUpPage> {
       emailAddress: _emailEC.text,
       password: _passwordEC.text,
       confirmPassword: _confirmPasswordEC.text,
+      context: context,
     );
   }
 
@@ -104,7 +105,7 @@ class SignUpPageState extends State<SignUpPage> {
                                     hintText: lang.fullName,
                                     controller: _fullNameEC,
                                     onChanged: (_) => validateFields(),
-                                    validator: (_) => _validators.fullNameValidator(_fullNameEC.text),
+                                    validator: (_) => _validators.fullNameValidator(_fullNameEC.text, context),
                                     keyboardType: TextInputType.name,
                                   ),
                                   SizedBox(height: height * .02),
@@ -113,7 +114,7 @@ class SignUpPageState extends State<SignUpPage> {
                                     hintText: lang.emailAddress,
                                     controller: _emailEC,
                                     onChanged: (_) => validateFields(),
-                                    validator: (_) => _validators.emailValidator(_emailEC.text),
+                                    validator: (_) => _validators.emailValidator(_emailEC.text, context),
                                     keyboardType: TextInputType.emailAddress,
                                   ),
                                   SizedBox(height: height * .02),
@@ -130,7 +131,7 @@ class SignUpPageState extends State<SignUpPage> {
                                     hintText: lang.password,
                                     controller: _passwordEC,
                                     onChanged: (_) => validateFields(),
-                                    validator: (_) => _validators.passwordValidator(_passwordEC.text),
+                                    validator: (_) => _validators.passwordValidator(_passwordEC.text, context),
                                   ),
                                   SizedBox(height: height * .02),
                                   TextFieldWidget(
@@ -150,6 +151,7 @@ class SignUpPageState extends State<SignUpPage> {
                                     validator: (_) => _validators.confirmPasswordValidator(
                                       password: _passwordEC.text,
                                       confirmPassword: _confirmPasswordEC.text,
+                                      context: context,
                                     ),
                                   ),
                                   SizedBox(height: height * .03),

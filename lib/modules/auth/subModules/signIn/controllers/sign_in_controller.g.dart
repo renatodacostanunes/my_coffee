@@ -56,12 +56,14 @@ mixin _$SignInController on SignInControllerBase, Store {
 
   @override
   void validateAllFilds(
-      {required String emailAddress, required String password}) {
+      {required String emailAddress,
+      required String password,
+      required BuildContext context}) {
     final _$actionInfo = _$SignInControllerBaseActionController.startAction(
         name: 'SignInControllerBase.validateAllFilds');
     try {
-      return super
-          .validateAllFilds(emailAddress: emailAddress, password: password);
+      return super.validateAllFilds(
+          emailAddress: emailAddress, password: password, context: context);
     } finally {
       _$SignInControllerBaseActionController.endAction(_$actionInfo);
     }

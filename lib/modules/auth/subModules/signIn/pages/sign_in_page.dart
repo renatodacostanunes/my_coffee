@@ -28,6 +28,7 @@ class SignInPageState extends State<SignInPage> {
     _controller.validateAllFilds(
       emailAddress: _emailEC.text,
       password: _passwordEC.text,
+      context: context,
     );
   }
 
@@ -90,10 +91,11 @@ class SignInPageState extends State<SignInPage> {
                         child: Column(
                           children: [
                             TextFieldWidget(
+                              height: height * .03,
                               hintText: lang.emailAddress,
                               controller: _emailEC,
                               onChanged: (_) => validateFields(),
-                              validator: (_) => _validators.emailValidator(_emailEC.text),
+                              validator: (_) => _validators.emailValidator(_emailEC.text, context),
                               keyboardType: TextInputType.emailAddress,
                               suffixIcon: FutureBuilder(
                                 future: _controller.setEmail(_emailEC),
@@ -109,64 +111,69 @@ class SignInPageState extends State<SignInPage> {
                                     );
                                   }
                                   return IconButton(
-                                    icon: const Icon(Icons.arrow_drop_down),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (_) => StatefulBuilder(
-                                          builder: (_, setState) {
-                                            return Dialog(
-                                              alignment: const Alignment(1, -0.5),
-                                              insetPadding:
-                                                  EdgeInsets.symmetric(horizontal: width * .05, vertical: height * .1),
-                                              shape: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(8.0),
-                                                  borderSide: const BorderSide(color: Colors.transparent)),
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: _controller.emailsRegistered!
-                                                      .map(
-                                                        (email) => PopupMenuItem(
-                                                          onTap: () async {
-                                                            _emailEC.text = email;
-                                                            await _controller.saveLastSelectedEmail(email);
-                                                          },
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Flexible(
-                                                                child: Text(
-                                                                  email,
-                                                                  maxLines: 1,
-                                                                  overflow: TextOverflow.ellipsis,
+                                    icon: Icon(
+                                      Icons.arrow_drop_down,
+                                      size: height * 0.04,
+                                    ),
+                                    onPressed: _controller.emailsRegistered!.isNotEmpty
+                                        ? () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) => StatefulBuilder(
+                                                builder: (_, setState) {
+                                                  return Dialog(
+                                                    alignment: const Alignment(1, -0.5),
+                                                    insetPadding: EdgeInsets.symmetric(
+                                                        horizontal: width * .05, vertical: height * .1),
+                                                    shape: OutlineInputBorder(
+                                                        borderRadius: BorderRadius.circular(8.0),
+                                                        borderSide: const BorderSide(color: Colors.transparent)),
+                                                    child: SingleChildScrollView(
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: _controller.emailsRegistered!
+                                                            .map(
+                                                              (email) => PopupMenuItem(
+                                                                onTap: () async {
+                                                                  _emailEC.text = email;
+                                                                  await _controller.saveLastSelectedEmail(email);
+                                                                },
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Flexible(
+                                                                      child: Text(
+                                                                        email,
+                                                                        maxLines: 1,
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                    IconButton(
+                                                                      onPressed: () async {
+                                                                        await _controller.removeRegisteredAccount(
+                                                                          email,
+                                                                          _emailEC,
+                                                                        );
+                                                                        setState(() {});
+                                                                      },
+                                                                      icon: const Icon(
+                                                                        Icons.delete_forever,
+                                                                        color: AppColors.red,
+                                                                      ),
+                                                                    )
+                                                                  ],
                                                                 ),
                                                               ),
-                                                              IconButton(
-                                                                onPressed: () async {
-                                                                  await _controller.removeRegisteredAccount(
-                                                                    email,
-                                                                    _emailEC,
-                                                                  );
-                                                                  setState(() {});
-                                                                },
-                                                                icon: const Icon(
-                                                                  Icons.delete_forever,
-                                                                  color: AppColors.red,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )
-                                                      .toList(),
-                                                ),
+                                                            )
+                                                            .toList(),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             );
-                                          },
-                                        ),
-                                      );
-                                    },
+                                          }
+                                        : null,
                                   );
                                 },
                               ),
@@ -175,6 +182,7 @@ class SignInPageState extends State<SignInPage> {
                             Observer(
                               builder: (context) {
                                 return TextFieldWidget(
+                                  height: height * .03,
                                   onChanged: (_) => validateFields(),
                                   hintText: lang.password,
                                   controller: _passwordEC,
@@ -261,7 +269,9 @@ class SignInPageState extends State<SignInPage> {
                             ),
                             SocialMediaLoginWidget(
                               image: "assets/images/google_logo.png",
-                              onTap: () {},
+                              onTap: () async {
+                                await _controller.signInWithGoogle(context);
+                              },
                             ),
                             SocialMediaLoginWidget(
                               image: "assets/images/twitter_logo.png",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_coffee/core/styles/colors.dart';
 
-Future<dynamic> loading(BuildContext context) async {
+Future<void> loading(BuildContext context) async {
   showDialog(
     barrierDismissible: false,
     context: context,

@@ -27,7 +27,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "br.com.renato.nunes.my_coffee"
-    compileSdk flutter.compileSdkVersion
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -68,4 +68,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+     implementation 'com.facebook.android:facebook-login:latest.release'
+}

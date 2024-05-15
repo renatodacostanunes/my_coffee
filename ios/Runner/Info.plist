@@ -61,16 +61,22 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.937023659762-f70ilnukh7daot8kvp6k173rfl9q2c2u</string>
+				<string>fb435691699170457</string>
 			</array>
 		</dict>
-		<!-- <dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>***Something here***</string>
-			</array>
-		</dict> -->
 	</array>
+	<key>FacebookAppID</key>
+	<string>435691699170457</string>			
+	<key>FacebookClientToken</key>
+	<string>f8d5c5c0b3b2d1cbcfb0cd30493ae9fb</string>
+	<key>FacebookDisplayName</key>
+	<string>My Coffee</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>fbapi</string>	
+	<string>fb-messenger-share-api</string>	
+	</array>
+
 </dict>
 </plist>
+

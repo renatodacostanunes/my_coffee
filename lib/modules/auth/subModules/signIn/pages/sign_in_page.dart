@@ -134,6 +134,7 @@ class SignInPageState extends State<SignInPage> {
                                                         children: _controller.emailsRegistered!
                                                             .map(
                                                               (email) => PopupMenuItem(
+                                                                padding: EdgeInsets.only(left: width * .045),
                                                                 onTap: () async {
                                                                   _emailEC.text = email;
                                                                   await _controller.saveLastSelectedEmail(email);
@@ -149,6 +150,8 @@ class SignInPageState extends State<SignInPage> {
                                                                       ),
                                                                     ),
                                                                     IconButton(
+                                                                      padding: EdgeInsets.zero,
+                                                                      // constraints: const BoxConstraints(),
                                                                       onPressed: () async {
                                                                         await _controller.removeRegisteredAccount(
                                                                           email,
@@ -160,7 +163,7 @@ class SignInPageState extends State<SignInPage> {
                                                                         Icons.delete_forever,
                                                                         color: AppColors.red,
                                                                       ),
-                                                                    )
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -265,7 +268,9 @@ class SignInPageState extends State<SignInPage> {
                           children: [
                             SocialMediaLoginWidget(
                               image: "assets/images/facebook_logo.png",
-                              onTap: () {},
+                              onTap: () async {
+                                await _controller.signInWithFacebook(context);
+                              },
                             ),
                             SocialMediaLoginWidget(
                               image: "assets/images/google_logo.png",

@@ -10,7 +10,6 @@ import 'package:my_coffee/core/shared/widgets/text_field_widget.dart';
 import 'package:my_coffee/core/styles/colors.dart';
 import 'package:my_coffee/locale/language.dart';
 import 'package:my_coffee/modules/auth/subModules/signUp/controllers/sign_up_controller.dart';
-import 'package:my_coffee/modules/auth/subModules/signUp/models/register_account_model.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -160,23 +159,24 @@ class SignUpPageState extends State<SignUpPage> {
                                       return ButtonWidget(
                                         onPressed: _controller.validFilds
                                             ? () async {
-                                                var registerAccountModel = RegisterAccountModel(
-                                                  fullName: _fullNameEC.text,
-                                                  emailAddress: _emailEC.text,
-                                                  password: _passwordEC.text,
+                                                await _controller.registerAccount(
+                                                  _emailEC.text,
+                                                  _passwordEC.text,
+                                                  _fullNameEC.text,
+                                                  context,
                                                 );
-                                                await _controller.registerAccount(registerAccountModel, context);
                                               }
                                             : null,
                                         titleButton: lang.register,
                                         onLongPress: _controller.validFilds
                                             ? () async {
-                                                var registerAccountModel = RegisterAccountModel(
-                                                  fullName: _fullNameEC.text,
-                                                  emailAddress: _emailEC.text,
-                                                  password: _passwordEC.text,
+                                                await _controller.registerAccount(
+                                                  _emailEC.text,
+                                                  _passwordEC.text,
+                                                  _fullNameEC.text,
+                                                  context,
+                                                  true,
                                                 );
-                                                await _controller.registerAccount(registerAccountModel, context, true);
                                               }
                                             : null,
                                       );

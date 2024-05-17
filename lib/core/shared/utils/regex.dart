@@ -7,3 +7,5 @@ final RegExp emailPattern = RegExp(
 );
 
 final RegExp passwordPattern = RegExp(r"^(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,}$");
+
+final RegExp namePattern = RegExp(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$");

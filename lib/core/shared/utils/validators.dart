@@ -14,14 +14,15 @@ class Validators {
   String? fullNameValidator(String? name, BuildContext context) {
     var nameSplited = name?.trim().split(" ") ?? [];
     if ((name?.isEmpty ?? false) ||
-        (nameSplited.length > 1 && nameSplited[0].length > 1 && nameSplited[1].length > 1)) {
+        (nameSplited.length > 1 && nameSplited[0].length > 1 && nameSplited[1].length > 1) &&
+            (namePattern.hasMatch(name?.trim() ?? ""))) {
       return null;
     }
+
     return Language().translation(context).invalidName;
   }
 
   String? passwordValidator(String? password, BuildContext context) {
-    // TODO: Melhorar para mostrar quais etapas da senha estão corretas.
     if (password == null || password.isEmpty || passwordPattern.hasMatch(password.trim())) return null;
     return "${Language().translation(context).passwordMustContain}\n${Language().translation(context).specialCharacter}\n${Language().translation(context).capitalLetter}\n${Language().translation(context).charactersMinimum}";
   }

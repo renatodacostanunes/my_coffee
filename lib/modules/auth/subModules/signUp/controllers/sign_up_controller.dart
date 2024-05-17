@@ -4,20 +4,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_coffee/core/consts/app_routes.dart';
 import 'package:my_coffee/core/shared/utils/loading.dart';
-import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage.dart';
-import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage_keys.dart';
 import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs.dart';
+import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs_keys.dart';
 import 'package:my_coffee/core/shared/utils/snackbar.dart';
-import 'package:my_coffee/core/shared/utils/tools.dart';
 import 'package:my_coffee/core/shared/utils/validators.dart';
-import 'package:my_coffee/modules/auth/subModules/signUp/models/register_account_model.dart';
 
 part 'sign_up_controller.g.dart';
 
 class SignUpController = SignUpControllerBase with _$SignUpController;
 
 abstract class SignUpControllerBase with Store {
-  final _secureStorage = Modular.get<SecureStorage>();
   final _sharedPrefs = Modular.get<SharedPrefs>();
   final _firebaseAuth = Modular.get<FirebaseAuth>();
 
@@ -31,50 +27,35 @@ abstract class SignUpControllerBase with Store {
   bool confirmPasswordVisible = true;
 
   Future<void> registerAccount(
-    RegisterAccountModel registerAccountModel,
+    String email,
+    String password,
+    String displayName,
     BuildContext context, [
     bool withError = false,
   ]) async {
     try {
       await loading(context);
       if (withError) throw Exception();
-      var emailExists = await _secureStorage.contains(registerAccountModel.emailAddress);
-      if (emailExists) {
-        if (!context.mounted) return;
-        removeLoading(context);
-        showMessage(snackBarEmailAlreadyRegistered(context), context);
-        return;
-      }
-      await _secureStorage.save(
-        registerAccountModel.emailAddress,
-        RegisterAccountModel.fromMap(
-          <String, dynamic>{
-            "fullName": registerAccountModel.fullName,
-            "emailAddress": registerAccountModel.emailAddress,
-            "password": registerAccountModel.password,
-          },
-        ).toJson(),
-      );
 
-      List<String>? listEnconded;
+      await _firebaseAuth
+          .createUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          )
+          .then(
+            (userCredential) => userCredential.user?.updateDisplayName(displayName),
+          );
+
+      List<String>? emailsRecovered;
       List<String> emailsRegistered = [];
 
-      listEnconded = await _sharedPrefs.load(SecurageStorageKeys.emailsRegistered);
-      if (listEnconded != null && listEnconded.isNotEmpty) {
-        emailsRegistered = listEnconded..add(registerAccountModel.emailAddress);
+      emailsRecovered = await _sharedPrefs.load(SharedPrefsKeys.emailsRegistered);
+      if (emailsRecovered != null && emailsRecovered.isNotEmpty) {
+        emailsRegistered = emailsRecovered..add(email);
       } else {
-        emailsRegistered.add(registerAccountModel.emailAddress);
+        emailsRegistered.add(email);
       }
-      await _sharedPrefs.save(SecurageStorageKeys.emailsRegistered, emailsRegistered);
-
-      try {
-        await _firebaseAuth.createUserWithEmailAndPassword(
-          email: registerAccountModel.emailAddress,
-          password: registerAccountModel.password,
-        );
-      } catch (e) {
-        logger(e);
-      }
+      await _sharedPrefs.save(SharedPrefsKeys.emailsRegistered, emailsRegistered);
 
       if (!context.mounted) return;
       removeLoading(context);
@@ -83,10 +64,18 @@ abstract class SignUpControllerBase with Store {
         AppRoutes.auth + AppRoutes.signIn,
         arguments: emailsRegistered,
       );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "email-already-in-use") {
+        if (!context.mounted) return;
+        removeLoading(context);
+        showMessage(snackBarEmailAlreadyRegistered(context), context);
+        return;
+      }
     } catch (e) {
       if (!context.mounted) return;
       removeLoading(context);
       showMessage(snackBarFailure(context), context);
+      return;
     }
   }
 

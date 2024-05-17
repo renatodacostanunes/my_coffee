@@ -19,6 +19,50 @@ SnackBar snackBarEmailAlreadyRegistered(BuildContext context) => SnackBar(
       ),
     );
 
+SnackBar snackBarRecordPassword(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).success,
+        message: Language().translation(context).passwordRecoverySuccessfully,
+        contentType: ContentType.success,
+      ),
+    );
+
+SnackBar snackBarEmailInvalid(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).warning,
+        message: Language().translation(context).invalidEmail,
+        contentType: ContentType.warning,
+      ),
+    );
+
+SnackBar snackBarEmailWrongPassword(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).warning,
+        message: Language().translation(context).incorrectPassword,
+        contentType: ContentType.warning,
+      ),
+    );
+
+SnackBar snackBarEmailInvalidPassword(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).warning,
+        message: Language().translation(context).invalidPassword,
+        contentType: ContentType.warning,
+      ),
+    );
+
 SnackBar snackBarRegisteredWithSuccess(BuildContext context) => SnackBar(
       elevation: 0,
       behavior: SnackBarBehavior.floating,

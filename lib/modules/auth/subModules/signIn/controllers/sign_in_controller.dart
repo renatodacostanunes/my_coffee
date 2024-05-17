@@ -7,8 +7,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_coffee/core/consts/app_routes.dart';
 import 'package:my_coffee/core/shared/utils/loading.dart';
-import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage.dart';
-import 'package:my_coffee/core/shared/utils/secure_storage/secure_storage_keys.dart';
 import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs.dart';
 import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs_keys.dart';
 import 'package:my_coffee/core/shared/utils/snackbar.dart';
@@ -21,8 +19,8 @@ part 'sign_in_controller.g.dart';
 class SignInController = SignInControllerBase with _$SignInController;
 
 abstract class SignInControllerBase with Store {
-  final _secureStorage = Modular.get<SecureStorage>();
   final _sharedPrefs = Modular.get<SharedPrefs>();
+  final _firebaseAuth = Modular.get<FirebaseAuth>();
   List<String>? emailsRegistered = [];
 
   @observable
@@ -61,18 +59,39 @@ abstract class SignInControllerBase with Store {
     try {
       await loading(context);
       if (withError) throw Exception();
-      var emailValid = await _secureStorage.contains(email);
-      String? data = await _secureStorage.load(email);
-      var registerAccountModel = RegisterAccountModel.fromJson(data ?? "");
-      if (emailValid && registerAccountModel.password.isNotEmpty && password == registerAccountModel.password) {
-        if (!context.mounted) return;
-        removeLoading(context);
-        showMessage(snackBarLoginSuccess(context), context);
-        Modular.to.pushNamed(AppRoutes.home, arguments: registerAccountModel);
-      } else {
-        if (!context.mounted) return;
-        removeLoading(context);
-        showMessage(snackBarLoginPasswordIncorrect(context), context);
+      var userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+      if (!context.mounted) return;
+      removeLoading(context);
+      showMessage(snackBarLoginSuccess(context), context);
+      Modular.to.pushNamedAndRemoveUntil(
+        AppRoutes.home,
+        (_) => false,
+        arguments: RegisterAccountModel(
+          fullName: userCredential.user?.displayName ?? "",
+          emailAddress: userCredential.user?.email ?? "",
+          photoURL: userCredential.user?.photoURL,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      removeLoading(context);
+      switch (e.code) {
+        case "email-already-in-use":
+          showMessage(snackBarEmailAlreadyRegistered(context), context);
+          break;
+        case "invalid-email":
+          showMessage(snackBarEmailInvalid(context), context);
+          break;
+        case "wrong-password":
+          showMessage(snackBarEmailWrongPassword(context), context);
+          break;
+        case "invalid-password":
+          showMessage(snackBarEmailInvalidPassword(context), context);
+          break;
+        default:
+          showMessage(snackBarFailure(context), context);
       }
     } catch (e) {
       if (!context.mounted) return;
@@ -84,8 +103,7 @@ abstract class SignInControllerBase with Store {
   Future<void> setEmail(TextEditingController emailEC) async {
     try {
       await Future.delayed(const Duration(seconds: 1));
-      List<String>? arguments = Modular.args.data;
-
+      List<String>? arguments = Modular.args.data ?? <String>[];
       if (arguments != null && arguments.isNotEmpty) {
         emailsRegistered = arguments;
         emailEC.text = emailsRegistered!.last;
@@ -94,7 +112,7 @@ abstract class SignInControllerBase with Store {
         emailEC.text = await _sharedPrefs.load<String?>(SharedPrefsKeys.lastSelectedEmail) ?? "";
       }
 
-      emailsRegistered = await _sharedPrefs.load<List<String>?>(SecurageStorageKeys.emailsRegistered) ?? [];
+      emailsRegistered = await _sharedPrefs.load<List<String>?>(SharedPrefsKeys.emailsRegistered) ?? [];
     } catch (e) {
       logger(e);
     }
@@ -110,15 +128,14 @@ abstract class SignInControllerBase with Store {
 
   Future<void> removeRegisteredAccount(String email, TextEditingController emailEC) async {
     try {
-      emailsRegistered = await _sharedPrefs.load<List<String>?>(SecurageStorageKeys.emailsRegistered) ?? [];
+      emailsRegistered = await _sharedPrefs.load<List<String>?>(SharedPrefsKeys.emailsRegistered) ?? [];
       emailsRegistered?.removeAt(emailsRegistered!.indexOf(email));
       var lastEmail = await _sharedPrefs.load<String?>(SharedPrefsKeys.lastSelectedEmail) ?? "";
       if (lastEmail == email) {
         emailEC.text = "";
         await _sharedPrefs.delete(SharedPrefsKeys.lastSelectedEmail);
       }
-      await _secureStorage.delete(email);
-      await _sharedPrefs.save(SecurageStorageKeys.emailsRegistered, emailsRegistered);
+      await _sharedPrefs.save(SharedPrefsKeys.emailsRegistered, emailsRegistered);
     } catch (e) {
       logger(e);
     }
@@ -141,7 +158,6 @@ abstract class SignInControllerBase with Store {
       var registerAccountModel = RegisterAccountModel(
         fullName: userCredential.user?.displayName ?? "",
         emailAddress: userCredential.user?.email ?? "",
-        password: "",
         photoURL: userCredential.user?.photoURL,
       );
 
@@ -165,7 +181,6 @@ abstract class SignInControllerBase with Store {
       var registerAccountModel = RegisterAccountModel(
         fullName: userCredential.user?.displayName ?? "",
         emailAddress: userCredential.user?.email ?? "",
-        password: "",
         photoURL: userCredential.user?.photoURL,
       );
 

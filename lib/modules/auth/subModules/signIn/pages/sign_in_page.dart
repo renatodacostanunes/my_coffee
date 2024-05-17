@@ -151,7 +151,6 @@ class SignInPageState extends State<SignInPage> {
                                                                     ),
                                                                     IconButton(
                                                                       padding: EdgeInsets.zero,
-                                                                      // constraints: const BoxConstraints(),
                                                                       onPressed: () async {
                                                                         await _controller.removeRegisteredAccount(
                                                                           email,
@@ -204,12 +203,18 @@ class SignInPageState extends State<SignInPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  lang.forgotPassword,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primary,
-                                    fontSize: width * .03,
+                                InkWell(
+                                  onTap: () => Modular.to.pushNamed(
+                                    AppRoutes.auth + AppRoutes.recoverPassword,
+                                    arguments: _emailEC.text,
+                                  ),
+                                  child: Text(
+                                    lang.forgotPassword,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primary,
+                                      fontSize: width * .03,
+                                    ),
                                   ),
                                 ),
                               ],

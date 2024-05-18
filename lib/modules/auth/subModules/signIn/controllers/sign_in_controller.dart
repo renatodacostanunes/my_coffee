@@ -6,13 +6,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_coffee/core/consts/app_routes.dart';
+import 'package:my_coffee/core/shared/controllers/session_controller.dart';
 import 'package:my_coffee/core/shared/utils/loading.dart';
 import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs.dart';
 import 'package:my_coffee/core/shared/utils/shared_prefs/shared_prefs_keys.dart';
 import 'package:my_coffee/core/shared/utils/snackbar.dart';
 import 'package:my_coffee/core/shared/utils/tools.dart';
 import 'package:my_coffee/core/shared/utils/validators.dart';
-import 'package:my_coffee/modules/auth/subModules/signUp/models/register_account_model.dart';
 
 part 'sign_in_controller.g.dart';
 
@@ -21,6 +21,7 @@ class SignInController = SignInControllerBase with _$SignInController;
 abstract class SignInControllerBase with Store {
   final _sharedPrefs = Modular.get<SharedPrefs>();
   final _firebaseAuth = Modular.get<FirebaseAuth>();
+  final _sessionController = Modular.get<SessionController>();
   List<String>? emailsRegistered = [];
 
   @observable
@@ -63,18 +64,12 @@ abstract class SignInControllerBase with Store {
         email: email.trim(),
         password: password.trim(),
       );
+      _sessionController.saveUserSession(userCredential);
       if (!context.mounted) return;
       removeLoading(context);
       showMessage(snackBarLoginSuccess(context), context);
-      Modular.to.pushNamedAndRemoveUntil(
-        AppRoutes.home,
-        (_) => false,
-        arguments: RegisterAccountModel(
-          fullName: userCredential.user?.displayName ?? "",
-          emailAddress: userCredential.user?.email ?? "",
-          photoURL: userCredential.user?.photoURL,
-        ),
-      );
+
+      Modular.to.pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
     } on FirebaseAuthException catch (e) {
       removeLoading(context);
       switch (e.code) {
@@ -155,15 +150,11 @@ abstract class SignInControllerBase with Store {
 
       var userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-      var registerAccountModel = RegisterAccountModel(
-        fullName: userCredential.user?.displayName ?? "",
-        emailAddress: userCredential.user?.email ?? "",
-        photoURL: userCredential.user?.photoURL,
-      );
+      _sessionController.saveUserSession(userCredential);
 
       if (!context.mounted) return;
       showMessage(snackBarLoginSuccess(context), context);
-      Modular.to.pushNamed(AppRoutes.home, arguments: registerAccountModel);
+      Modular.to.pushNamed(AppRoutes.home);
     } catch (e) {
       logger(e);
       if (!context.mounted) return;
@@ -178,15 +169,11 @@ abstract class SignInControllerBase with Store {
           FacebookAuthProvider.credential(loginResult.accessToken?.token ?? "");
       var userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
-      var registerAccountModel = RegisterAccountModel(
-        fullName: userCredential.user?.displayName ?? "",
-        emailAddress: userCredential.user?.email ?? "",
-        photoURL: userCredential.user?.photoURL,
-      );
+      _sessionController.saveUserSession(userCredential);
 
       if (!context.mounted) return;
       showMessage(snackBarLoginSuccess(context), context);
-      Modular.to.pushNamed(AppRoutes.home, arguments: registerAccountModel);
+      Modular.to.pushNamed(AppRoutes.home);
     } catch (e) {
       if (!context.mounted) return;
       showMessage(snackBarFailure(context), context);

@@ -23,6 +23,7 @@ dependencies:
   firebase_auth: ^4.19.5
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.2.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -46,4 +47,12 @@ flutter:
         - asset: assets/fonts/poppins/Poppins-Regular.ttf
           weight: 400
         - asset: assets/fonts/poppins/Poppins-SemiBold.ttf
+          weight: 600
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/inter/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/inter/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/inter/Inter-SemiBold.ttf
           weight: 600

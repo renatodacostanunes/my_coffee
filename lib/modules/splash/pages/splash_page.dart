@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.brown.withOpacity(.79),
+                      AppColors.background.withOpacity(.79),
                       Colors.transparent,
                     ],
                     begin: Alignment.topCenter,

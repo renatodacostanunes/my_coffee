@@ -41,5 +41,10 @@
   "sendEmail": "Send email",
   "rememberedPassword": "Remembered password?",
   "loginYourAccount": "Login to your account",
-  "passwordRecoverySuccessfully": "Password recovery email sent successfully"
+  "passwordRecoverySuccessfully": "Password recovery email sent successfully",
+  "goodMorning": "Good Morning",
+  "goodAfternoon": "Good Afternoon",
+  "goodNight": "Good Night",
+  "loginEnableBiometric": "Login with password to enable biometrics login",
+  "loginExpiredBiometric": "Login expired, login with password to enable biometrics"
 }

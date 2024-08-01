@@ -81,7 +81,7 @@ SnackBar snackBarLoginSuccess(BuildContext context) => SnackBar(
       content: AwesomeSnackbarContent(
         title: Language().translation(context).success,
         message: Language().translation(context).sessionExpires,
-        contentType: ContentType.help,
+        contentType: ContentType.success,
       ),
     );
 
@@ -92,6 +92,28 @@ SnackBar snackBarLoginPasswordIncorrect(BuildContext context) => SnackBar(
       content: AwesomeSnackbarContent(
         title: Language().translation(context).ops,
         message: Language().translation(context).incorrectPassword,
+        contentType: ContentType.warning,
+      ),
+    );
+
+SnackBar snackBarLoginEnableBiometric(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).ops,
+        message: Language().translation(context).loginEnableBiometric,
+        contentType: ContentType.warning,
+      ),
+    );
+
+SnackBar snackBarLoginExpiredBiometric(BuildContext context) => SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: Language().translation(context).ops,
+        message: Language().translation(context).loginExpiredBiometric,
         contentType: ContentType.warning,
       ),
     );

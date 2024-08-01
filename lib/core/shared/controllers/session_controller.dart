@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:my_coffee/locale/language.dart';
 
 part 'session_controller.g.dart';
 
@@ -19,4 +21,16 @@ abstract class SessionControllerBase with Store {
   }
 
   DateTime sessionExpires() => dateLogged.add(const Duration(hours: 1));
+
+  String getWelcomeMessage(BuildContext context) {
+    int hour = DateTime.now().hour;
+    var lang = Language().translation(context);
+    if (hour <= 12) {
+      return lang.goodMorning;
+    } else if (hour >= 18) {
+      return lang.goodNight;
+    } else {
+      return lang.goodAfternoon;
+    }
+  }
 }

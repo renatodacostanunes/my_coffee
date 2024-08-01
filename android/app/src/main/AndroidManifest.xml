@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.renato.nunes.my_coffee">
+    package="br.com.renato.nunes.my_coffee">    
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
     </queries>
@@ -38,6 +38,8 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.

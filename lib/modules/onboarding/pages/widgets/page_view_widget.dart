@@ -56,7 +56,7 @@ class PageViewWidget extends StatelessWidget {
                     style: TextStyle(
                       height: 1.0,
                       fontWeight: FontWeight.bold,
-                      fontSize: width * 0.1,
+                      fontSize: width * 0.08,
                       color: AppColors.white,
                     ),
                   ),
@@ -66,7 +66,7 @@ class PageViewWidget extends StatelessWidget {
                     subTitle,
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
-                      fontSize: width * 0.04,
+                      fontSize: width * 0.035,
                       color: AppColors.primary,
                     ),
                   ),

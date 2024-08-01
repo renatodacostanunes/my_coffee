@@ -94,11 +94,17 @@ class SignInPageState extends State<SignInPage> {
                               height: height * .03,
                               hintText: lang.emailAddress,
                               controller: _emailEC,
-                              onChanged: (_) => validateFields(),
+                              onChanged: (_) {
+                                _controller.showBiometric(
+                                  emailAddress: _emailEC.text,
+                                  context: context,
+                                );
+                                validateFields();
+                              },
                               validator: (_) => _validators.emailValidator(_emailEC.text, context),
                               keyboardType: TextInputType.emailAddress,
                               suffixIcon: FutureBuilder(
-                                future: _controller.setEmail(_emailEC),
+                                future: _controller.setEmail(_emailEC, context),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
                                     return Container(
@@ -222,19 +228,31 @@ class SignInPageState extends State<SignInPage> {
                             SizedBox(height: height * .03),
                             Observer(
                               builder: (context) {
-                                return ButtonWidget(
-                                  onPressed: _controller.validFilds
-                                      ? () async => await _controller.login(_emailEC.text, _passwordEC.text, context)
-                                      : null,
-                                  onLongPress: _controller.validFilds
-                                      ? () async =>
-                                          await _controller.login(_emailEC.text, _passwordEC.text, context, true)
-                                      : null,
-                                  titleButton: lang.signIn,
+                                return Column(
+                                  children: [
+                                    ButtonWidget(
+                                      onPressed: _controller.validFilds
+                                          ? () async =>
+                                              await _controller.login(_emailEC.text, _passwordEC.text, context)
+                                          : null,
+                                      onLongPress: _controller.validFilds
+                                          ? () async =>
+                                              await _controller.login(_emailEC.text, _passwordEC.text, context, true)
+                                          : null,
+                                      titleButton: lang.signIn,
+                                    ),
+                                    _controller.emailValid
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              await _controller.signInWithBiometric(_emailEC.text, context);
+                                            },
+                                            icon: Icon(Icons.fingerprint, size: height * .1),
+                                          )
+                                        : SizedBox(height: height * .03)
+                                  ],
                                 );
                               },
                             ),
-                            SizedBox(height: height * .06),
                           ],
                         ),
                       ),

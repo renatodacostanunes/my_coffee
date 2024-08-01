@@ -41,5 +41,10 @@
   "sendEmail": "Enviar email",
   "rememberedPassword": "Lembra da senha?",
   "loginYourAccount": "Entrar na sua conta",
-  "passwordRecoverySuccessfully": "Email de recuperação de senha enviado com sucesso"
+  "passwordRecoverySuccessfully": "Email de recuperação de senha enviado com sucesso",
+  "goodMorning": "Bom Dia",
+  "goodAfternoon": "Boa Tarde",
+  "goodNight": "Boa Noite",
+  "loginEnableBiometric": "Faça login com senha para ativar o login biométrico",
+  "loginExpiredBiometric": "Login expirado, faça login com senha para habilitar a biometria"
 }

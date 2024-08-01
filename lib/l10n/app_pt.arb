@@ -28,6 +28,8 @@
   "incorrectPassword": "Senha incorreta",
   "error": "Erro",
   "somethingWrong": "Algo deu errado, tente novamente mais tarde",
+  "emailOrPasswordInvalid": "Email ou senha inválido",
+  "userNotFound": "Usuário não encontrado",
   "invalidEmail": "Email inválido",
   "invalidName": "Nome inválido",
   "passwordMustContain": "A senha precisa conter pelo menos:",

@@ -28,6 +28,8 @@
   "incorrectPassword": "Incorrect password",
   "error": "Error",
   "somethingWrong": "Something went wrong, try again later",
+  "emailOrPasswordInvalid": "Invalid email or password",
+  "userNotFound": "User not found",
   "invalidEmail": "Invalid email",
   "invalidName": "Invalid name",
   "passwordMustContain": "The password must contain at least:",

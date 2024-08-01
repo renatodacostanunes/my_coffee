@@ -99,18 +99,13 @@ abstract class SignInControllerBase with Store {
     } on FirebaseAuthException catch (e) {
       removeLoading(context);
       switch (e.code) {
-        case "email-already-in-use":
-          showMessage(snackBarEmailAlreadyRegistered(context), context);
+        case "invalid-credential":
+          showMessage(snackBarPasswordOrEmailIncorrect(context), context);
           break;
-        case "invalid-email":
-          showMessage(snackBarEmailInvalid(context), context);
+        case "user-not-found":
+          showMessage(snackBarUserNotFound(context), context);
           break;
-        case "wrong-password":
-          showMessage(snackBarEmailWrongPassword(context), context);
-          break;
-        case "invalid-password":
-          showMessage(snackBarEmailInvalidPassword(context), context);
-          break;
+
         default:
           showMessage(snackBarFailure(context), context);
       }
@@ -195,7 +190,7 @@ abstract class SignInControllerBase with Store {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
       final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken?.token ?? "");
+          FacebookAuthProvider.credential(loginResult.accessToken?.tokenString ?? "");
       var userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
 
       _sessionController.saveUserSession(userCredential);
